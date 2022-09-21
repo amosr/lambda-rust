@@ -78,7 +78,7 @@ Section mguard.
   Global Instance mutexguard_type_contractive α : TypeContractive (mutexguard α).
   Proof.
     constructor;
-      solve_proper_core ltac:(fun _ => f_type_equiv || f_contractive || f_equiv
+      solve_proper_core ltac:(fun _ => f_type_equiv || f_contractive_fin || f_equiv
                                     || exact: type_dist2_S).
   Qed.
   Global Instance mutexguard_ne α : NonExpansive (mutexguard α).

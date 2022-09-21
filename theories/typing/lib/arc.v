@@ -34,7 +34,7 @@ Section arc.
   Proof.
     unfold arc_persist, P1, P2.
     solve_proper_core ltac:(fun _ => exact: type_dist2_S || exact: type_dist2_dist ||
-                                     f_type_equiv || f_contractive || f_equiv).
+                                     f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Lemma arc_persist_type_incl tid ν γ l ty1 ty2:
@@ -167,7 +167,7 @@ Section arc.
   Proof.
     constructor=>/=; unfold arc, full_arc_own, shared_arc_own;
       solve_proper_core ltac:(fun _ => exact: type_dist2_S || exact: type_dist2_dist ||
-                                       f_type_equiv || f_contractive || f_equiv).
+                                       f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance arc_ne : NonExpansive arc.
@@ -280,7 +280,7 @@ Section arc.
   Proof.
     constructor;
       solve_proper_core ltac:(fun _ => exact: type_dist2_S || exact: type_dist2_dist ||
-                                       f_type_equiv || f_contractive || f_equiv).
+                                       f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance weak_ne : NonExpansive weak.

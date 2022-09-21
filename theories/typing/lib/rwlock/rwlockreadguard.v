@@ -69,7 +69,7 @@ Section rwlockreadguard.
   Proof.
     constructor;
       solve_proper_core ltac:(fun _ => exact: type_dist2_S || (eapply rwlock_inv_type_ne; try reflexivity) ||
-                                              f_type_equiv || f_contractive || f_equiv).
+                                              f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
   Global Instance rwlockreadguard_ne α : NonExpansive (rwlockreadguard α).
   Proof. apply type_contractive_ne, _. Qed.

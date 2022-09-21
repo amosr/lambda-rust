@@ -74,7 +74,7 @@ Section rc.
   Global Instance rc_inv_ne tid ν γ l n :
     Proper (type_dist2 n ==> dist n) (rc_inv tid ν γ l).
   Proof.
-    solve_proper_core ltac:(fun _ => f_type_equiv || f_contractive || f_equiv).
+    solve_proper_core ltac:(fun _ => f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Definition rc_persist tid ν (γ : gname) (l : loc) (ty : type) : iProp Σ :=
@@ -93,7 +93,7 @@ Section rc.
     Proper (type_dist2 n ==> dist n) (rc_persist tid ν γ l).
   Proof.
     solve_proper_core ltac:(fun _ => exact: type_dist2_S || exact: type_dist2_dist ||
-                                     f_type_equiv || f_contractive || f_equiv).
+                                     f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Lemma rc_persist_type_incl tid ν γ l ty1 ty2:
@@ -200,7 +200,7 @@ Section rc.
   Proof.
     constructor;
       solve_proper_core ltac:(fun _ => exact: type_dist2_S || exact: type_dist2_dist ||
-                                       f_type_equiv || f_contractive || f_equiv).
+                                       f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance rc_ne : NonExpansive rc.

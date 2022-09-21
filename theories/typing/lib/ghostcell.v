@@ -227,7 +227,7 @@ Section ghostcell.
     Proper (type_dist2 n ==> dist n) (ghostcell_inv tid l β α).
   Proof.
     solve_proper_core
-      ltac:(fun _ => exact: type_dist2_S || f_type_equiv || f_contractive || f_equiv).
+      ltac:(fun _ => exact: type_dist2_S || f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance ghostcell_inv_ne tid l β α : NonExpansive (ghostcell_inv tid l β α).
@@ -329,7 +329,7 @@ Section ghostcell.
       solve_proper_core ltac:(
         fun _ => exact: type_dist2_S || (eapply ghostcell_inv_type_ne; try reflexivity) ||
                         (eapply ghostcell_inv_proj_type_ne; try reflexivity) ||
-                                              f_type_equiv || f_contractive || f_equiv).
+                                              f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance ghostcell_ne α : NonExpansive (ghostcell α).

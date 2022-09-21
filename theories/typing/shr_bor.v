@@ -46,7 +46,7 @@ Section shr_bor.
 
   Global Instance shr_type_contractive κ : TypeContractive (shr_bor κ).
   Proof.
-    intros n ???. apply: ty_of_st_type_ne. destruct n; first done.
+    intros n ???. apply: ty_of_st_type_ne. dist_later_fin_intro.
     solve_type_proper.
   Qed.
 

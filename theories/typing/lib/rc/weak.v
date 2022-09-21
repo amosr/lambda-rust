@@ -71,7 +71,7 @@ Section weak.
   Proof.
     constructor;
       solve_proper_core ltac:(fun _ => exact: type_dist2_S || exact: type_dist2_dist ||
-                                       f_type_equiv || f_contractive || f_equiv).
+                                       f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance weak_ne : NonExpansive weak.

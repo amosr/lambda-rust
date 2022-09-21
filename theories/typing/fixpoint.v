@@ -12,7 +12,7 @@ Section fixpoint_def.
   Local Instance type_2_contractive : Contractive (Nat.iter 2 T).
   Proof using Type*.
     intros n ? **. simpl.
-    by apply dist_later_dist, type_dist2_dist_later, HT, HT, type_later_dist2_later.
+    by apply dist_later_S, type_dist2_dist_later, HT, HT, type_later_dist2_later.
   Qed.
 
   Definition type_fixpoint : type := fixpointK 2 T.

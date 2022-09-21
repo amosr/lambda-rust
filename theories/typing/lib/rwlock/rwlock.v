@@ -51,7 +51,7 @@ Section rwlock_inv.
     Proper (type_dist2 n ==> dist n) (rwlock_inv tid_own tid_shr l γ α).
   Proof.
     solve_proper_core
-      ltac:(fun _ => exact: type_dist2_S || f_type_equiv || f_contractive || f_equiv).
+      ltac:(fun _ => exact: type_dist2_S || f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance rwlock_inv_ne tid_own tid_shr l γ α :
@@ -178,7 +178,7 @@ Section rwlock.
   Proof.
     constructor;
       solve_proper_core ltac:(fun _ => exact: type_dist2_S || (eapply rwlock_inv_type_ne; try reflexivity) ||
-                                              f_type_equiv || f_contractive || f_equiv).
+                                              f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance rwlock_ne : NonExpansive rwlock.

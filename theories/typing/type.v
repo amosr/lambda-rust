@@ -295,13 +295,14 @@ Section type_dist2.
   Proof. intros EQ. split; intros; try apply dist_dist_later; apply EQ. Qed.
   Lemma type_dist2_dist_later n ty1 ty2 : type_dist2 n ty1 ty2 → dist_later n ty1 ty2.
   Proof.
-    intros EQ. destruct n; first done. split; intros; try apply EQ.
+    intros EQ. eapply dist_later_fin_iff. destruct n; first done.
+    split; intros; try apply EQ; try si_solver.
     apply dist_S, EQ.
   Qed.
   Lemma type_later_dist2_later n ty1 ty2 : dist_later n ty1 ty2 → type_dist2_later n ty1 ty2.
-  Proof. destruct n; first done. exact: type_dist_dist2. Qed.
+  Proof. destruct n; first done. rewrite dist_later_fin_iff. exact: type_dist_dist2. Qed.
   Lemma type_dist2_dist n ty1 ty2 : type_dist2 (S n) ty1 ty2 → dist n ty1 ty2.
-  Proof. move=>/type_dist2_dist_later. done. Qed.
+  Proof. move=>/type_dist2_dist_later. rewrite dist_later_fin_iff. done. Qed.
   Lemma type_dist2_S n ty1 ty2 : type_dist2 (S n) ty1 ty2 → type_dist2 n ty1 ty2.
   Proof. intros. apply type_dist_dist2, type_dist2_dist. done. Qed.
 
@@ -309,7 +310,7 @@ Section type_dist2.
   Proof. intros ?? EQ. apply EQ. Qed.
   Lemma ty_own_type_dist n:
     Proper (type_dist2 (S n) ==> eq ==> eq ==> dist n) ty_own.
-  Proof. intros ?? EQ ??-> ??->. apply EQ. Qed.
+  Proof. intros ?? EQ ??-> ??->. apply EQ. si_solver. Qed.
   Lemma ty_shr_type_dist n :
     Proper (type_dist2 n ==> eq ==> eq ==> eq ==> dist n) ty_shr.
   Proof. intros ?? EQ ??-> ??-> ??->. apply EQ. Qed.
@@ -352,22 +353,22 @@ Section type_contractive.
   Lemma type_contractive_type_ne T :
     TypeContractive T → TypeNonExpansive T.
   Proof.
-    intros HT ? ???. apply type_dist_dist2, dist_later_dist, type_dist2_dist_later, HT. done.
+    intros HT ? ???. eapply type_dist_dist2, dist_later_S, type_dist2_dist_later, HT. done.
   Qed.
 
   Lemma type_contractive_ne T :
     TypeContractive T → NonExpansive T.
   Proof.
-    intros HT ? ???. apply dist_later_dist, type_dist2_dist_later, HT, type_dist_dist2. done.
+    intros HT ? ???. apply dist_later_S, type_dist2_dist_later, HT, type_dist_dist2. done.
   Qed.
 
   (* Simple types *)
   Global Instance ty_of_st_type_ne n :
     Proper (dist_later n ==> type_dist2 n) ty_of_st.
   Proof.
-    intros ???. constructor.
+    intros ?? Hdst. constructor.
     - done.
-    - intros. destruct n; first done; simpl. f_equiv. done.
+    - intros. dist_later_intro. eapply Hdst.
     - intros. solve_contractive.
   Qed.
 End type_contractive.
@@ -376,11 +377,11 @@ End type_contractive.
 Ltac f_type_equiv :=
   first [ ((eapply ty_size_type_dist || eapply ty_shr_type_dist || eapply ty_own_type_dist); try reflexivity) |
           match goal with | |- @dist_later ?A _ ?n ?x ?y =>
-                            destruct n as [|n]; [exact I|change (@dist A _ n x y)]
+                            eapply dist_later_fin_iff; destruct n as [|n]; [exact I|change (@dist A _ n x y)]
           end ].
 Ltac solve_type_proper :=
   constructor;
-  solve_proper_core ltac:(fun _ => f_type_equiv || f_contractive || f_equiv).
+  solve_proper_core ltac:(fun _ => f_type_equiv || f_contractive_fin || f_equiv).
 
 
 Fixpoint shr_locsE (l : loc) (n : nat) : coPset :=
