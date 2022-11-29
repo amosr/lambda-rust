@@ -11,7 +11,7 @@ Lemma tac_wp_value `{!lrustGS Σ} Δ E Φ e v :
   envs_entails Δ (Φ v) → envs_entails Δ (WP e @ E {{ Φ }}).
 Proof. rewrite envs_entails_unseal=> ? ->. by apply wp_value. Qed.
 
-Ltac wp_value_head := eapply tac_wp_value; [iSolveTC|reduction.pm_prettify].
+Ltac wp_value_head := eapply tac_wp_value; [tc_solve|reduction.pm_prettify].
 
 Lemma tac_wp_pure `{!lrustGS Σ} K Δ Δ' E e1 e2 φ n Φ :
   PureExec φ n e1 e2 →
@@ -31,9 +31,9 @@ Tactic Notation "wp_pure" open_constr(efoc) :=
   | |- envs_entails _ (wp ?s ?E ?e ?Q) => reshape_expr e ltac:(fun K e' =>
     unify e' efoc;
     eapply (tac_wp_pure K);
-    [simpl; iSolveTC                (* PureExec *)
+    [simpl; tc_solve                (* PureExec *)
     |try done                       (* The pure condition for PureExec *)
-    |iSolveTC                       (* IntoLaters *)
+    |tc_solve                       (* IntoLaters *)
     |simpl_subst; try wp_value_head (* new goal *)])
    || fail "wp_pure: cannot find" efoc "in" e "or" efoc "is not a reduct"
   | _ => fail "wp_pure: not a 'wp'"
@@ -56,7 +56,7 @@ Tactic Notation "wp_eq_loc" :=
   lazymatch goal with
   | |- envs_entails _ (wp ?s ?E ?e ?Q) =>
      reshape_expr e ltac:(fun K e' => eapply (tac_wp_eq_loc K));
-       [iSolveTC|iAssumptionCore|iAssumptionCore|simpl; try wp_value_head]
+       [tc_solve|iAssumptionCore|iAssumptionCore|simpl; try wp_value_head]
   | _ => fail "wp_pure: not a 'wp'"
   end.
 
@@ -186,7 +186,7 @@ Tactic Notation "wp_alloc" ident(l) "as" constr(H) constr(Hf) :=
       [reshape_expr e ltac:(fun K e' => eapply (tac_wp_alloc K _ _ _ H Hf))
       |fail 1 "wp_alloc: cannot find 'Alloc' in" e];
     [try fast_done
-    |iSolveTC
+    |tc_solve
     |let sz := fresh "sz" in let Hsz := fresh "Hsz" in
      first [intros l sz Hsz | fail 1 "wp_alloc:" l "not fresh"];
      (* If Hsz is "constant Z = nat", change that to an equation on nat and
@@ -214,7 +214,7 @@ Tactic Notation "wp_free" :=
       [reshape_expr e ltac:(fun K e' => eapply (tac_wp_free K))
       |fail 1 "wp_free: cannot find 'Free' in" e];
     [try fast_done
-    |iSolveTC
+    |tc_solve
     |let l := match goal with |- _ = Some (_, (?l ↦∗ _)%I) => l end in
      iAssumptionCore || fail "wp_free: cannot find" l "↦∗ ?"
     |pm_reflexivity
@@ -235,7 +235,7 @@ Tactic Notation "wp_read" :=
       |fail 1 "wp_read: cannot find 'Read' in" e];
     [(right; fast_done) || (left; fast_done) ||
      fail "wp_read: order is neither Na2Ord nor ScOrd"
-    |iSolveTC
+    |tc_solve
     |let l := match goal with |- _ = Some (_, (?l ↦{_} _)%I) => l end in
      iAssumptionCore || fail "wp_read: cannot find" l "↦ ?"
     |simpl; try wp_value_head]
@@ -247,11 +247,11 @@ Tactic Notation "wp_write" :=
   lazymatch goal with
   | |- envs_entails _ (wp ?s ?E ?e ?Q) =>
     first
-      [reshape_expr e ltac:(fun K e' => eapply (tac_wp_write K); [iSolveTC|..])
+      [reshape_expr e ltac:(fun K e' => eapply (tac_wp_write K); [tc_solve|..])
       |fail 1 "wp_write: cannot find 'Write' in" e];
     [(right; fast_done) || (left; fast_done) ||
      fail "wp_write: order is neither Na2Ord nor ScOrd"
-    |iSolveTC
+    |tc_solve
     |let l := match goal with |- _ = Some (_, (?l ↦{_} _)%I) => l end in
      iAssumptionCore || fail "wp_write: cannot find" l "↦ ?"
     |pm_reflexivity
