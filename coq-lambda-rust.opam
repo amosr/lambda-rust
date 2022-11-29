@@ -13,7 +13,7 @@ the type system, and safety proof for some Rust libraries.
 """
 
 depends: [
-  "coq-iris" { (= "dev.2022-11-29.1.c44ce4c9") | (= "dev") }
+  "coq-iris" { (= "dev.2022-11-29.2.de908f52") | (= "dev") }
 ]
 
 build: [make "-j%{jobs}%"]
