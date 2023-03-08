@@ -59,7 +59,7 @@ Section refcell_inv.
     Proper (type_dist2 n ==> dist n) (refcell_inv tid l γ α).
   Proof.
     solve_proper_core
-      ltac:(fun _ => exact: type_dist2_S || f_type_equiv || f_contractive || f_equiv).
+      ltac:(fun _ => exact: type_dist2_S || f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance refcell_inv_ne tid l γ α : NonExpansive (refcell_inv tid l γ α).
@@ -173,7 +173,7 @@ Section refcell.
   Proof.
     constructor;
       solve_proper_core ltac:(fun _ => exact: type_dist2_S || (eapply refcell_inv_type_ne; try reflexivity) ||
-                                              f_type_equiv || f_contractive || f_equiv).
+                                              f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
 
   Global Instance refcell_ne : NonExpansive refcell.

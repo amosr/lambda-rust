@@ -76,12 +76,12 @@ Section fn.
     Proper (pointwise_relation A (fn_params_rel (type_dist2_later n')) ==>
             type_dist2 n') fn.
   Proof.
-    intros fp1 fp2 Hfp. apply ty_of_st_type_ne. destruct n'; first done.
+    intros fp1 fp2 Hfp. apply ty_of_st_type_ne. dist_later_fin_intro.
     constructor; unfold ty_own; simpl.
     (* TODO: 'f_equiv' is slow here because reflexivity is slow. *)
     (* The clean way to do this would be to have a metric on type contexts. Oh well. *)
     intros tid vl. unfold typed_body.
-    do 12 f_equiv. f_contractive.
+    do 12 f_equiv. f_contractive_fin.
     do 18 ((eapply fp_E_proper; try reflexivity) || exact: Hfp || f_equiv).
     - rewrite !cctx_interp_singleton /=. do 5 f_equiv.
       rewrite !tctx_interp_singleton /tctx_elt_interp /=.
@@ -94,7 +94,7 @@ Section fn.
             end)%I).
       { intros Hprop. apply Hprop, list_fmap_ne; last first.
         - symmetry. eapply Forall2_impl; first apply Hfp. intros.
-          apply dist_later_dist, type_dist2_dist_later. done.
+          apply dist_later_S, type_dist2_dist_later. done.
         - solve_proper. }
       clear. intros n tid p i x y. rewrite list_dist_lookup=>/(_ i).
       case _ : (x !! i)=>[tyx|]; case  _ : (y !! i)=>[tyy|];
@@ -104,7 +104,7 @@ Section fn.
   Global Instance fn_ne n' :
     Proper (pointwise_relation A (fn_params_rel (dist n')) ==> dist n') fn.
   Proof.
-    intros ?? Hfp. apply dist_later_dist, type_dist2_dist_later.
+    intros ?? Hfp. apply dist_later_S, type_dist2_dist_later.
     apply fn_type_contractive=>u. split; last split.
     - eapply Forall2_impl; first apply Hfp. intros. simpl.
       apply type_dist_dist2. done.

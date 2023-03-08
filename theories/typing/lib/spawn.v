@@ -52,7 +52,7 @@ Section join_handle.
   Global Instance join_handle_type_contractive : TypeContractive join_handle.
   Proof.
     constructor;
-      solve_proper_core ltac:(fun _ => progress unfold join_inv || exact: type_dist2_dist || f_type_equiv || f_contractive || f_equiv).
+      solve_proper_core ltac:(fun _ => progress unfold join_inv || exact: type_dist2_dist || f_type_equiv || f_contractive_fin || f_equiv).
   Qed.
   Global Instance join_handle_ne : NonExpansive join_handle.
   Proof. apply type_contractive_ne, _. Qed.
