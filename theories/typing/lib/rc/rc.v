@@ -280,7 +280,7 @@ Section code.
       iPoseProof "Hpersist" as (ty') "(Hincl & Hinv & _ & #Hνend)".
       iMod (na_inv_acc with "Hinv Hna") as "(Hproto & Hna & Hclose)"; [solve_ndisj..|].
       iDestruct "Hproto" as ([st weak]) "[>Hst Hproto]".
-      iDestruct (own_valid_2 with "Hst Htok") as %[[[[=]|(?&st'&[=<-]&EQst'&Hincl)]
+      iCombine "Hst Htok" gives %[[[[=]|(?&st'&[=<-]&EQst'&Hincl)]
         %option_included _]%prod_included [Hval _]]%auth_both_valid_discrete.
       simpl in EQst'. subst st. destruct Hincl as [Hincl|Hincl].
       + destruct st' as [[]| |]; try by inversion Hincl. apply (inj Cinl) in Hincl.
@@ -344,7 +344,7 @@ Section code.
           iIntros "!> Hna". iClear "Hνend". clear q' Hqq' weak Hval.
           iMod (na_inv_acc with "Hinv Hna") as "(Hproto & Hna & Hclose)"; [solve_ndisj..|].
           iDestruct "Hproto" as ([st weak]) "[>Hst Hproto]".
-          iDestruct (own_valid_2 with "Hst Htok") as %[[[[=]|(?&st'&[=<-]&EQst'&Hincl)]
+          iCombine "Hst Htok" gives %[[[[=]|(?&st'&[=<-]&EQst'&Hincl)]
             %option_included _]%prod_included [Hval _]]%auth_both_valid_discrete.
           simpl in EQst'. subst st. destruct Hincl as [Hincl|Hincl]; first last.
           { apply csum_included in Hincl. destruct Hincl as
@@ -415,7 +415,7 @@ Section code.
     iMod (na_inv_acc with "Hinv Hna") as "(Hrcproto & Hna & Hclose2)"; [solve_ndisj..|].
     iMod (na_bor_acc with "LFT Hrctokb Hα1 Hna") as "(>Hrctok & Hna & Hclose3)"; [solve_ndisj..|].
     iDestruct "Hrcproto" as ([st weak]) "[>Hrc● Hrcst]".
-    iDestruct (own_valid_2 with "Hrc● Hrctok") as %[[[[=]|(?&[[q0 s0]| |]&[=<-]&?&Hincl)]
+    iCombine "Hrc● Hrctok" gives %[[[[=]|(?&[[q0 s0]| |]&[=<-]&?&Hincl)]
                %option_included _]%prod_included [Hval _]]%auth_both_valid_discrete;
     setoid_subst; try done; last first.
     { exfalso. destruct Hincl as [Hincl|Hincl].
@@ -475,7 +475,7 @@ Section code.
     iMod (na_inv_acc with "Hinv Hna") as "(Hrcproto & Hna & Hclose2)"; [solve_ndisj..|].
     iMod (na_bor_acc with "LFT Hrctokb Hα1 Hna") as "(>Hrctok & Hna & Hclose3)"; [solve_ndisj..|].
     iDestruct "Hrcproto" as ([st weak]) "[>Hrc● Hrcst]".
-    iDestruct (own_valid_2 with "Hrc● Hrctok") as %[[[[=]|(?&[[q0 weak0]| |]&[=<-]&?&Hincl)]
+    iCombine "Hrc● Hrctok" gives %[[[[=]|(?&[[q0 weak0]| |]&[=<-]&?&Hincl)]
                %option_included _]%prod_included [Hval _]]%auth_both_valid_discrete;
     setoid_subst; try done; last first.
     { exfalso. destruct Hincl as [Hincl|Hincl].
@@ -581,7 +581,7 @@ Section code.
     iMod (na_inv_acc with "Hinv Hna") as "(Hrcproto & Hna & Hclose2)"; [solve_ndisj..|].
     iMod (na_bor_acc with "LFT Hrctokb Hα1 Hna") as "(>Hrctok & Hna & Hclose3)"; [solve_ndisj..|].
     iDestruct "Hrcproto" as ([st weak]) "[>Hrc● Hrcst]".
-    iDestruct (own_valid_2 with "Hrc● Hrctok") as %[[[[=]|(?&[[q0 s0]| |]&[=<-]&?&Hincl)]
+    iCombine "Hrc● Hrctok" gives %[[[[=]|(?&[[q0 s0]| |]&[=<-]&?&Hincl)]
                %option_included _]%prod_included [Hval _]]%auth_both_valid_discrete;
     setoid_subst; try done; last first.
     { exfalso. destruct Hincl as [Hincl|Hincl].

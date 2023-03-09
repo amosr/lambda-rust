@@ -552,7 +552,7 @@ Section ghostcell.
         destruct rw as[|].
         { iDestruct "Hst'" as (κ'0) "(Hbor & Hdead)".
           iMod (bor_acc_atomic with "LFT Hbor") as "[[> Hst' Hcloseb]|[H† Hcloseb]]"; first done.
-          - iDestruct (own_valid_2 with "Hset Hst'") as %[].
+          - iCombine "Hset Hst'" gives %[].
           - iMod "Hcloseb" as "_".
             iMod ("Hdead" with "H†") as "Hst'".
             iMod ("Hcloses" with "Hset") as "Hβ2".
@@ -579,7 +579,7 @@ Section ghostcell.
           iExists l, (Vector.cons #lc Vector.nil).
           by iFrame "Hshr Hl Hfree". }
         iDestruct "Hsucc" as (q'0) "[>Hownκ'0 Hcloseκ'0]".
-        iDestruct (own_valid_2 with "Hset Hownκ'0") as %Hvalidκ'0.
+        iCombine "Hset Hownκ'0" gives %Hvalidκ'0.
         (* Argue that we have the same κ' here as the already existing sharing protocol. *)
         assert (Hκ'κ'0 : κ' = κ'0).
         { move: Hvalidκ'0. rewrite /ghosttoken_st_to_R /=.
@@ -683,7 +683,7 @@ Section ghostcell.
         { iDestruct "Hst'" as (κ'0) "(Hbor & Hdead)".
           iMod (bor_acc_atomic with "LFT Hbor") as "[[> Hst' Hcloseb]|[H† Hcloseb]]";
             first done.
-          { iDestruct (own_valid_2 with "Hset Hst'") as %[]. }
+          { iCombine "Hset Hst'" gives %[]. }
           iMod "Hcloseb" as "_".
           iMod ("Hdead" with "H†") as "Hst'".
           iFrame. done. }
@@ -692,7 +692,7 @@ Section ghostcell.
         iClear "Hshrκ".
         iMod (frac_bor_atomic_acc with "LFT Hκ'0bor") as "[Hsucc|[H Hcloseb]]"; first done.
         { iDestruct "Hsucc" as (q) "[>Htok _]".
-          iDestruct (own_valid_2 with "Hset Htok") as %[]. }
+          iCombine "Hset Htok" gives %[]. }
         iMod "Hcloseb" as "_".
         iMod ("Hνκ" with "H") as "$".
         iMod "Hclose".

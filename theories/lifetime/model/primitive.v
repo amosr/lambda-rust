@@ -47,7 +47,7 @@ Lemma own_alft_auth_agree (A : gmap atomic_lft bool) Λ b :
     own alft_name (◯ {[Λ := to_lft_stateR b]}) -∗ ⌜A !! Λ = Some b⌝.
 Proof.
   iIntros "HA HΛ".
-  iDestruct (own_valid_2 with "HA HΛ") as %[HA _]%auth_both_valid_discrete.
+  iCombine "HA HΛ" gives %[HA _]%auth_both_valid_discrete.
   iPureIntro. move: HA=> /singleton_included_l [qs [/leibniz_equiv_iff]].
   rewrite lookup_fmap fmap_Some=> -[b' [? ->]] /Some_included.
   move=> [/leibniz_equiv_iff|/csum_included]; destruct b, b'; naive_solver.
@@ -65,7 +65,7 @@ Proof.
   { iDestruct 1 as (γs) "[#? [Hx Hy]]"; iSplitL "Hx"; iExists γs; eauto. }
   iIntros "[Hx Hy]".
   iDestruct "Hx" as (γs) "[Hγs Hx]"; iDestruct "Hy" as (γs') "[Hγs' Hy]".
-  iDestruct (own_valid_2 with "Hγs Hγs'") as %Hγs. move : Hγs.
+  iCombine "Hγs Hγs'" gives %Hγs. move : Hγs.
   rewrite -auth_frag_op auth_frag_valid singleton_op singleton_valid=> /to_agree_op_inv_L <-.
   iExists γs. iSplit; first done. rewrite own_op; iFrame.
 Qed.
@@ -78,6 +78,13 @@ Lemma own_bor_valid κ x : own_bor κ x -∗ ✓ x.
 Proof. iDestruct 1 as (γs) "[#? Hx]". by iApply own_valid. Qed.
 Lemma own_bor_valid_2 κ x y : own_bor κ x -∗ own_bor κ y -∗ ✓ (x ⋅ y).
 Proof. apply wand_intro_r. rewrite -own_bor_op. apply own_bor_valid. Qed.
+Global Instance own_bor_sep_gives κ x y :
+  CombineSepGives (own_bor κ x) (own_bor κ y) (✓ (x ⋅ y)).
+Proof.
+  rewrite /CombineSepGives. iIntros "[H1 H2]".
+  iDestruct (own_bor_valid_2 with "H1 H2") as "#?"; auto.
+Qed.
+
 Lemma own_bor_update κ x y : x ~~> y → own_bor κ x ==∗ own_bor κ y.
 Proof.
   iDestruct 1 as (γs) "[#Hκ Hx]"; iExists γs. iFrame "Hκ". by iApply own_update.
@@ -99,7 +106,7 @@ Proof.
   { iDestruct 1 as (γs) "[#? [Hx Hy]]"; iSplitL "Hx"; iExists γs; eauto. }
   iIntros "[Hx Hy]".
   iDestruct "Hx" as (γs) "[Hγs Hx]"; iDestruct "Hy" as (γs') "[Hγs' Hy]".
-  iDestruct (own_valid_2 with "Hγs Hγs'") as %Hγs. move: Hγs.
+  iCombine "Hγs Hγs'" gives %Hγs. move: Hγs.
   rewrite -auth_frag_op auth_frag_valid singleton_op singleton_valid=> /to_agree_op_inv_L=> <-.
   iExists γs. iSplit; first done. rewrite own_op; iFrame.
 Qed.
@@ -112,6 +119,12 @@ Lemma own_cnt_valid κ x : own_cnt κ x -∗ ✓ x.
 Proof. iDestruct 1 as (γs) "[#? Hx]". by iApply own_valid. Qed.
 Lemma own_cnt_valid_2 κ x y : own_cnt κ x -∗ own_cnt κ y -∗ ✓ (x ⋅ y).
 Proof. apply wand_intro_r. rewrite -own_cnt_op. apply own_cnt_valid. Qed.
+Global Instance own_cnt_sep_gives κ x y :
+  CombineSepGives (own_cnt κ x) (own_cnt κ y) (✓ (x ⋅ y)).
+Proof.
+  rewrite /CombineSepGives. iIntros "[H1 H2]".
+  iDestruct (own_cnt_valid_2 with "H1 H2") as "#?"; auto.
+Qed.
 Lemma own_cnt_update κ x y : x ~~> y → own_cnt κ x ==∗ own_cnt κ y.
 Proof.
   iDestruct 1 as (γs) "[#Hκ Hx]"; iExists γs. iFrame "Hκ". by iApply own_update.
@@ -133,7 +146,7 @@ Proof.
   { iDestruct 1 as (γs) "[#? [Hx Hy]]"; iSplitL "Hx"; iExists γs; eauto. }
   iIntros "[Hx Hy]".
   iDestruct "Hx" as (γs) "[Hγs Hx]"; iDestruct "Hy" as (γs') "[Hγs' Hy]".
-  iDestruct (own_valid_2 with "Hγs Hγs'") as %Hγs. move: Hγs.
+  iCombine "Hγs Hγs'" gives %Hγs. move: Hγs.
   rewrite -auth_frag_op auth_frag_valid singleton_op singleton_valid=> /to_agree_op_inv_L=> <-.
   iExists γs. iSplit; first done. rewrite own_op; iFrame.
 Qed.
@@ -146,6 +159,12 @@ Lemma own_inh_valid κ x : own_inh κ x -∗ ✓ x.
 Proof. iDestruct 1 as (γs) "[#? Hx]". by iApply own_valid. Qed.
 Lemma own_inh_valid_2 κ x y : own_inh κ x -∗ own_inh κ y -∗ ✓ (x ⋅ y).
 Proof. apply wand_intro_r. rewrite -own_inh_op. apply own_inh_valid. Qed.
+Global Instance own_inh_sep_gives κ x y :
+  CombineSepGives (own_inh κ x) (own_inh κ y) (✓ (x ⋅ y)).
+Proof.
+  rewrite /CombineSepGives. iIntros "[H1 H2]".
+  iDestruct (own_inh_valid_2 with "H1 H2") as "#?"; auto.
+Qed.
 Lemma own_inh_update κ x y : x ~~> y → own_inh κ x ==∗ own_inh κ y.
 Proof.
   iDestruct 1 as (γs) "[#Hκ Hx]"; iExists γs. iFrame "Hκ". by iApply own_update.
@@ -276,7 +295,7 @@ Lemma lft_tok_dead q κ : q.[κ] -∗ [† κ] -∗ False.
 Proof.
   rewrite /lft_tok /lft_dead. iIntros "H"; iDestruct 1 as (Λ') "[% H']".
   iDestruct (@big_sepMS_elem_of _ _ _ _ _ _ Λ' with "H") as "H"=> //.
-  iDestruct (own_valid_2 with "H H'") as %Hvalid.
+  iCombine "H H'" gives %Hvalid.
   move: Hvalid=> /auth_frag_valid /=; by rewrite singleton_op singleton_valid.
 Qed.
 

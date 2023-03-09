@@ -86,7 +86,7 @@ Section rwlockreadguard_functions.
     + iAssert (|={⊤ ∖ ↑rwlockN}[⊤ ∖ ↑rwlockN ∖ ↑lftN ∖ lft_userE]▷=>
                (lx' ↦ #(Z_of_rwlock_st st'-1) ==∗ rwlock_inv tid_own tid lx' γ β ty))%I
         with "[H● H◯ Hx' Hν Hst H†]" as "INV".
-      { iDestruct (own_valid_2 with "H● H◯") as %[[[=]| (? & st0 & [=<-] & -> & [Heq|Hle])]
+      { iCombine "H● H◯" gives %[[[=]| (? & st0 & [=<-] & -> & [Heq|Hle])]
            %option_included Hv]%auth_both_valid_discrete.
         - destruct st0 as [|[[agν q']n]|]; try by inversion Heq. revert Heq. simpl.
           intros [[EQ <-%leibniz_equiv]%(inj2 pair) <-%leibniz_equiv]

@@ -129,7 +129,7 @@ Section refmut_functions.
     iDestruct "INV" as (st) "(H↦lrc & H● & INV)". wp_read. wp_let. wp_op. wp_write.
     iAssert (|={↑lftN ∪ lft_userE}[lft_userE]▷=> refcell_inv tid lrc γ β ty')%I
       with "[H↦lrc H● H◯ Hν INV]" as "INV".
-    { iDestruct (own_valid_2 with "H● H◯") as
+    { iCombine "H● H◯" gives
         %[[[=]|(? & [[? q'] ?] & [= <-] & Hst & INCL)]%option_included _]
          %auth_both_valid_discrete.
       destruct st as [[[[??]?]?]|]; [|done]. move: Hst=>-[= ???]. subst.
@@ -302,7 +302,7 @@ Section refmut_functions.
     iMod (na_bor_acc with "LFT Hinv Hβ Hna") as "(INV & Hna & Hclosena)"; [done..|].
     wp_seq. wp_op. wp_read.
     iDestruct "INV" as (st) "(Hlrc & H● & Hst)".
-    iDestruct (own_valid_2 with "H● Hγ") as %[Hst _]%auth_both_valid_discrete.
+    iCombine "H● Hγ" gives %[Hst _]%auth_both_valid_discrete.
     destruct st as [[[[??]?]?]|]; last by destruct Hst as [[?|] Hst]; inversion Hst.
     move:Hst=>/Some_pair_included [/Some_pair_included_total_1
               [/to_agree_included /(leibniz_equiv _ _) [= <- <-] _] _].

@@ -151,7 +151,7 @@ Section brandedvec.
     iDestruct "Hn" as (γn) "(Hidx1 & Hn)".
     iDestruct "Hm" as (γm) "(Hidx2 & Hm)".
     iDestruct (lft_meta_agree with "Hidx1 Hidx2") as %<-.
-    iDestruct (own_valid_2 with "Hn Hm") as %[?%max_nat_included ?]%auth_both_valid_discrete.
+    iCombine "Hn Hm" gives %[?%max_nat_included ?]%auth_both_valid_discrete.
     iPureIntro. simpl in *. lia.
   Qed.
 

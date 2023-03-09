@@ -156,7 +156,7 @@ Section code.
     iMod (na_inv_acc with "Hinv Hna") as "(Hrcproto & Hna & Hclose2)"; [solve_ndisj..|].
     iMod (na_bor_acc with "LFT Hwtokb Hα1 Hna") as "(>Hwtok & Hna & Hclose3)"; [solve_ndisj..|].
     iDestruct "Hrcproto" as ([st weakc]) "[>Hrc● Hrcst]".
-    iDestruct (own_valid_2 with "Hrc● Hwtok") as
+    iCombine "Hrc● Hwtok" gives
       %[[_ Hweak%nat_included]%prod_included [Hval _]]%auth_both_valid_discrete.
     destruct st as [[[q'' strong]| |]|]; try done.
     - (* Success case. *)
@@ -257,7 +257,7 @@ Section code.
     iMod (na_inv_acc with "Hinv Hna") as "(Hrcproto & Hna & Hclose2)"; [solve_ndisj..|].
     iMod (na_bor_acc with "LFT Hrctokb Hα1 Hna") as "(>Hrctok & Hna & Hclose3)"; [solve_ndisj..|].
     iDestruct "Hrcproto" as ([st weakc]) "[>Hrc● Hrcst]".
-    iDestruct (own_valid_2 with "Hrc● Hrctok") as %[[[[=]|(?&[[q0 weak0]| |]&[=<-]&?&Hincl)]
+    iCombine "Hrc● Hrctok" gives %[[[[=]|(?&[[q0 weak0]| |]&[=<-]&?&Hincl)]
                %option_included _]%prod_included [Hval _]]%auth_both_valid_discrete;
     setoid_subst; try done; last first.
     { exfalso. destruct Hincl as [Hincl|Hincl].
@@ -324,7 +324,7 @@ Section code.
     { iMod (na_inv_acc with "Hinv Hna") as "(Hrcproto & Hna & Hclose2)"; [solve_ndisj..|].
       iMod (na_bor_acc with "LFT Hwtokb Hα1 Hna") as "(>Hwtok & Hna & Hclose3)"; [solve_ndisj..|].
       iDestruct "Hrcproto" as ([st weakc]) "[>Hrc● Hrcst]".
-      iDestruct (own_valid_2 with "Hrc● Hwtok") as
+      iCombine "Hrc● Hwtok" gives
         %[[_ Hweak%nat_included]%prod_included [Hval _]]%auth_both_valid_discrete.
       iMod (own_update with "Hrc●") as "[Hrc● $]".
       { by apply auth_update_alloc, prod_local_update_2,
@@ -397,7 +397,7 @@ Section code.
       iDestruct "Hszeq" as %Hszeq.
       iMod (na_inv_acc with "Hinv Hna") as "(Hrcproto & Hna & Hclose)"; [solve_ndisj..|].
       iDestruct "Hrcproto" as ([st weakc]) "[>Hrc● Hrcst]".
-      iDestruct (own_valid_2 with "Hrc● Hwtok") as
+      iCombine "Hrc● Hwtok" gives
           %[[_ Hweak%nat_included]%prod_included [Hval _]]%auth_both_valid_discrete.
       destruct weakc as [|weakc]; first by simpl in *; lia.
       iMod (own_update_2 with "Hrc● Hwtok") as "Hrc●".

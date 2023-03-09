@@ -208,7 +208,7 @@ Section arc.
                              if decide (strong = xH) then q = q' ∧ wlock = None
                              else ∃ q'', q' = (q + q'')%Qp⌝.
   Proof.
-    iIntros "H● Htok". iDestruct (own_valid_2 with "H● Htok") as
+    iIntros "H● Htok". iCombine "H● Htok" gives
         %[[Hincl%option_included _]%prod_included [Hval _]]%auth_both_valid_discrete.
     destruct st, Hincl as [[=]|(?&?&[= <-]&?&[Hincl|Hincl%csum_included])];
       simpl in *; subst.
@@ -333,7 +333,7 @@ Section arc.
   Lemma weak_tok_auth_val γ st :
     own γ (● st) -∗ weak_tok γ -∗ ⌜∃ st' weak, st = (st', S weak) ∧ ✓ st'⌝.
   Proof.
-    iIntros "H● Htok". iDestruct (own_valid_2 with "H● Htok") as
+    iIntros "H● Htok". iCombine "H● Htok" gives
         %[[Hincl%option_included Hincl'%nat_included]%prod_included [Hval _]]
          %auth_both_valid_discrete.
     destruct st as [?[]], Hincl as [_|(?&?&[=]&?)]; simpl in *; try lia. eauto.
@@ -588,7 +588,7 @@ Section arc.
                  (alloc_option_local_update (Excl ())). }
       iMod ("Hclose" with "[-HΦ HP1 H◯]") as "_"; first by iExists _; eauto with iFrame.
       iModIntro. wp_case. wp_bind (!ˢᶜ_)%E. iInv N as ([st ?]) "[>H● H]" "Hclose".
-      iDestruct (own_valid_2 with "H● H◯") as
+      iCombine "H● H◯" gives
         %[[[[=]|Hincl]%option_included _]%prod_included [? _]]%auth_both_valid_discrete.
       simpl in Hincl. destruct Hincl as (? & ? & [=<-] & -> & [|Hincl]); last first.
       + apply csum_included in Hincl. destruct Hincl as [->|[Hincl|(?&?&[=]&?)]]=>//.
@@ -598,7 +598,7 @@ Section arc.
         iMod ("Hclose" with "[-HΦ H◯ HP1]") as "_"; first by iExists _; auto with iFrame.
         iModIntro. wp_let. wp_op; case_bool_decide; [lia|]. wp_let. wp_op. wp_bind (_ <-ˢᶜ _)%E.
         iInv N as ([st w]) "[>H● H]" "Hclose".
-        iDestruct (own_valid_2 with "H● H◯") as
+        iCombine "H● H◯" gives
            %[[[[=]|Hincl]%option_included _]%prod_included [Hval _]]%auth_both_valid_discrete.
         simpl in Hincl. destruct Hincl as (x1 & x2 & [=<-] & -> & Hincl); last first.
         assert (∃ q p, x2 = Cinl (q, p, Excl' ())) as (? & ? & ->).
